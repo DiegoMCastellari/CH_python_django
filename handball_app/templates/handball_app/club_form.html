@@ -1,4 +1,4 @@
-{% extends 'handball_app/base.html' %}
+{% extends 'handball_app/base_form.html' %}
 {% load static %}
 
 {% block titulo %}
@@ -7,18 +7,16 @@
 {% block subtitulo %}
 <p class="text-white-75 mb-5">Agrega un club a la base de clubes.</p>
 <a class="btn btn-primary btn-xl" href="#datos">Agregar club!</a>
-{% endblock subtitulo %}  
-
-{% block about %}
-    <h1 class="text-white mt-0">Agregar Clubes</h1>
-{% endblock about %}  
+{% endblock subtitulo %}   
 
 {% block datos %}
-<form action="" method="post">
+<h1 class="text-white mt-0">Formulario</h1>
+<form action="" method="post" >
     {% csrf_token %}
-    <table>
+    <table class="mx-auto">
         {{ form.as_table }}
     </table>
-    <input type="submit" value="Agregar">
+    <br>
+    <input class="btn btn-primary" type="submit" value="Enviar">
 </form>      
 {% endblock datos %}

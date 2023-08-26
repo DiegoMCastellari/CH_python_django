@@ -19,17 +19,16 @@
 <h3>Buscar Clubes</h3>
 <form action="/clubesBuscar" method="get">
     {% csrf_token %}
-    <p>Buscar: <input type="text" name="buscar", id="buscar"></p>
+    <p><i class="fa-solid fa-magnifying-glass"></i>Buscar: <input type="text" name="buscar", id="buscar"><input class="btn btn-primary" type="submit" value="Buscar"></p>
     {% if filtro_ingresado %}
         {% if filtro_ingresado == 'Filtro no ingresado!!!' %}
             <p style="color: red;"> {{ filtro_ingresado }}</p>
-        {% elif filtro_ingresado == 'Ningún objeto cumple el filtro!!!' %}
+        {% elif 'Ningún objeto cumple el filtro' in filtro_ingresado %}
             <p style="color: red;"> {{ filtro_ingresado }}</p>
         {% else %}
             <p style="color: lightsalmon;"> {{ filtro_ingresado }}</p>
         {% endif %}
     {% endif %}
-    <input type="submit" value="Buscar">
 </form>
 <br>
 <br>
@@ -46,7 +45,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for c in clubes %}
+    {% for c in club_list %}
         <tr>
             <td>{{ c.id }}</td>
             <td>{{ c.nombre }}</td>
@@ -54,10 +53,19 @@
             <td>{{ c.liga }}</td>
             <td>{{ c.ciudad }}</td>
             <td>{{ c.pais }}</td>
+            {% if user.is_authenticated %}
+            <td>
+                <a href="{% url 'update_clubes' c.id %}"><i class="fa-solid fa-file-pen"></i></a>
+                <a href="{% url 'delete_clubes' c.id %}"><i class="fa-solid fa-trash-can"></i></a>
+                
+            </td>
+            {% endif %}
         </tr>
     {% endfor %}
     </tbody>
 </table>        
 
-<a class="btn btn-light btn-xl" href="{% url 'formClubes' %}">Agregar Clubes</a>
+{% if user.is_authenticated %}
+<a class="btn btn-light btn-xl" href="{% url 'create_clubes' %}"><i class="fa-solid fa-circle-plus"></i> Agregar Clubes</a>
+{% endif %}
 {% endblock datos %}

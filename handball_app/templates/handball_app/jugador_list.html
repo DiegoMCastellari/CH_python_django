@@ -20,17 +20,17 @@
 <h3>Buscar Jugadores</h3>
 <form action="/jugadoresBuscar" method="get">
     {% csrf_token %}
-    <p>Buscar: <input type="text" name="buscar", id="buscar"></p>
+    <p><i class="fa-solid fa-magnifying-glass"></i> Buscar: <input type="text" name="buscar", id="buscar"><input class="btn btn-primary"type="submit" value="Buscar"></p>
     {% if filtro_ingresado %}
         {% if filtro_ingresado == 'Filtro no ingresado!!!' %}
             <p style="color: red;"> {{ filtro_ingresado }}</p>
-        {% elif filtro_ingresado == 'Ningún objeto cumple el filtro!!!' %}
+        {% elif 'Ningún objeto cumple el filtro' in filtro_ingresado %}
             <p style="color: red;"> {{ filtro_ingresado }}</p>
         {% else %}
             <p style="color: lightsalmon;"> {{ filtro_ingresado }}</p>
         {% endif %}
     {% endif %}
-    <input type="submit" value="Buscar">
+    
 </form>
 <br>
 <br>
@@ -47,7 +47,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for j in jugadores %}
+    {% for j in jugador_list %}
         <tr>
             <td>{{ j.id }}</td>
             <td>{{ j.nombre }}</td>
@@ -55,10 +55,18 @@
             <td>{{ j.nacionalidad }}</td>
             <td>{{ j.fecha_nacimiento }}</td>
             <td>{{ j.altura }}</td>
+            {% if user.is_authenticated %}
+            <td>
+                <a href="{% url 'update_jugadores' j.id %}"><i class="fa-solid fa-file-pen"></i></a>
+                <a href="{% url 'delete_jugadores' j.id %}"><i class="fa-solid fa-trash-can"></i></a>
+            </td>
+            {% endif %}
         </tr>
     {% endfor %}
     </tbody>
 </table>        
 
-<a class="btn btn-light btn-xl" href="{% url 'formJugadores' %}">Agregar Jugadores</a>
+{% if user.is_authenticated %}
+<a class="btn btn-light btn-xl" href="{% url 'create_jugadores' %}"><i class="fa-solid fa-circle-plus"></i> Agregar Jugadores</a>
+{% endif %}
 {% endblock datos %}
